@@ -8,12 +8,14 @@ from Wappalyzer import Wappalyzer, WebPage
 - ANALYZE WITH SNYK(?) THE WAPPALYZER DATA
 '''
 
-os.system('git clone https://github.com/arkadiyt/bounty-targets-data.git')
+if os.path.isfile('bounty-targets-data'):
+    os.system('git clone https://github.com/arkadiyt/bounty-targets-data.git')
+else:
+    os.system('cd bounty-targets-data && git pull')
 
 wappalyzer = Wappalyzer.latest()
 
-# SCAN ONLY HACKERONE TARGETS
-targets_json = open("targets/bounty-targets-data/data/hackerone_data.json", "r")
+targets_json = open("bounty-targets-data/data/hackerone_data.json", "r")
 targets = json.load(targets_json)
 file_to_save = open("versions.txt","w+")
 
@@ -40,6 +42,7 @@ for target in targets:
             if '[]' in str(version):
                  continue
             file_to_save.write(app + ": " + str(version) + "\n")
+    file_to_save.write(name + "\n")
             
 
 
