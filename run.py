@@ -27,22 +27,24 @@ for target in targets:
         if 'URL' not in asset_type:
             continue
         url = target_url['asset_identifier']
-        if '*' in url:
+        if '*' in url or ',' in url: # TODO CHANGE THIS ',' to actually split multiple target urls
              continue
         if 'http' not in url:
              url = "https://" + url
              
         print("Analyzing " + url + " ...")
-        webpage = WebPage.new_from_url(url)
-        results = wappalyzer.analyze_with_versions(webpage)
-        file_to_save.write(url + "\n")
+        try:
+            webpage = WebPage.new_from_url(url)
+            results = wappalyzer.analyze_with_versions(webpage)
+        except:
+            print("Following url failed for some reason: " + url)
+        file_to_save.write("--" + url + "\n")
         for result in results:
             version = results[result]['versions']
+            version_parsed = version.replace("[]", "")
             app = result
             if '[]' in str(version):
                  continue
-            file_to_save.write(app + ": " + str(version) + "\n")
-    file_to_save.write(name + "\n")
-            
-
-
+            file_to_save.write("----" + app + ": " + str(version_parsed) + "\n")
+    file_to_save.write("###################\n\n")
+    
