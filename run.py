@@ -66,7 +66,6 @@ def scan():
 					vulnerabilities_list = [vulner_results.get(key) for key in vulner_results if key not in ['info', 'blog', 'bugbounty']]
 					# vulner_results = vulners_api.search(vulners_query)
 					if len(vulnerabilities_list) != 0:
-						print(vulnerabilities_list)
 						vulners_file_save.write("------ " + str(vulners_query) + " ------ \n")
 						for vulns in vulnerabilities_list:
 							for vuln in vulns:
