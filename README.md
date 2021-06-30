@@ -7,4 +7,6 @@ Tool to quickly analyze bug bounty platforms targets by checking their technolog
 - Run vulnerability analysis on the technologies found (Snyk?)
 
 ## Installation
-Needs python-wappalyzer from https://github.com/chorsley/python-Wappalyzer
+```bash
+pip3 install -r requirements.txt
+```
