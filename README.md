@@ -1,5 +1,6 @@
+# TOOL STILL IN CONSTRUCTION
 # Depcher
-Tool to quickly analyze bug bounty platforms targets by checking their technology stack with wappalyzer
+Tool to quickly analyze bug bounty platforms targets by checking their technology stack with wappalyzer 
 
 ## TODO
 
