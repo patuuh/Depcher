@@ -1,4 +1,5 @@
-# Depcher
+# Depcher | ![GitHub last commit](https://img.shields.io/github/last-commit/patuuh/Depcher) ![GitHub Repo stars](https://img.shields.io/github/stars/patuuh/depcher)
+
 Tool to quickly analyze bug bounty platforms targets by checking their technology stack with wappalyzer and running Vulners scan to the found technologies
 
 ## Installation
