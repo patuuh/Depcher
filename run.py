@@ -9,6 +9,10 @@ from Wappalyzer import Wappalyzer, WebPage
 
 # Targets refreshed hourly: https://github.com/arkadiyt/bounty-targets-data.git
 
+''' TO DO:
+- ANALYZE WITH SNYK(?) THE WAPPALYZER DATA
+'''
+
 now = datetime.datetime.now()
 time = now.strftime("%d%b_%H%M")
 config = configparser.ConfigParser()
@@ -38,6 +42,10 @@ def scan():
 				if 'URL' not in asset_type:
 					continue
 				url = target_url['asset_identifier']
+				bounty = target_url['eligible_for_bounty']
+				if not bounty and args.bounty: # Skip the target if -b flag is set and target does not offer bounty
+					print("No bounty. Skipping...")
+					continue
 				if '*' in url or ',' in url: # TODO CHANGE THIS ',' to actually split multiple target urls
 					 continue
 				if 'http' not in url:
@@ -158,6 +166,7 @@ if __name__=='__main__':
 	parser = argparse.ArgumentParser(description='Web scan tool', usage='%(prog)s [options]')
 	parser.add_argument('-H', '--host', dest="host", help='Specific host(s) to scan instead of a list of hosts. Separated with ","')
 	parser.add_argument('-f', '--force', dest="force", default=False, action='store_true', help='Force scanning to HTTP instead of HTTPS')
+	parser.add_argument('-b', '--bounty', dest="bounty", default=False, action='store_true', help='Scan only targets that are eligible for bounties')
 	args = parser.parse_args()
 
 	api_key = config.get("API", "Vulners_api")  
