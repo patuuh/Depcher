@@ -44,7 +44,7 @@ def scan():
 				url = target_url['asset_identifier']
 				bounty = target_url['eligible_for_bounty']
 				if not bounty and args.bounty: # Skip the target if -b flag is set and target does not offer bounty
-					print("No bounty. Skipping...")
+					print("No bounty. Skipping " + url + " ...")
 					continue
 				if '*' in url or ',' in url: # TODO CHANGE THIS ',' to actually split multiple target urls
 					 continue
