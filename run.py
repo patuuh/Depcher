@@ -9,10 +9,6 @@ from Wappalyzer import Wappalyzer, WebPage
 
 # Targets refreshed hourly: https://github.com/arkadiyt/bounty-targets-data.git
 
-''' TO DO:
-- ANALYZE WITH SNYK(?) THE WAPPALYZER DATA
-'''
-
 now = datetime.datetime.now()
 time = now.strftime("%d%b_%H%M")
 config = configparser.ConfigParser()
