@@ -25,7 +25,8 @@ VulnersKey = config.get("API", "Vulners_api")
 def scan():
 
     wappalyzer = Wappalyzer.latest()
-    targets_json = open("bounty-targets-data/data/hackerone_data.json", "r", encoding="utf8")
+    targets_json = open(
+        "bounty-targets-data/data/hackerone_data.json", "r", encoding="utf8")
     targets = json.load(targets_json)
 
     filepath = "reports/%s/" % (time)
@@ -34,16 +35,16 @@ def scan():
 
     if not args.bounty:
         print("Starting the scan to all hosts (hosts that offer bounties and who don't)")
-    else: 
+    else:
         print("Starting the scan to targets that offer bounties")
-    file_to_save_targets.write("\n#######################\n" + "Hosts with technology stacks and their version information\n Note. You can find all tech stacks that have been found in a distinctive list at the end of this file!" + "\n#######################\n")
+    file_to_save_targets.write("\n#######################\n" +
+                               "Hosts with technology stacks and their version information\n Note. You can find all tech stacks that have been found in a distinctive list at the end of this file!" + "\n#######################\n")
     version_list = ""
 
     for target in targets:
         try:
             name = target['name']
             file_to_save_targets.write(name + "\n---------------\n")
-            vulners_file_save.write(name + "\n---------------\n")
             for target_url in target['targets']['in_scope']:
                 asset_type = target_url['asset_type']
                 if 'URL' not in asset_type:
@@ -70,7 +71,6 @@ def scan():
                     print("Following url failed for some reason: " + url)
 
                 file_to_save_targets.write("--" + url + "\n")
-                vulners_file_save.write("--" + url + "\n")
                 for result in results:
                     versions = results[result]['versions']
                     app = result
@@ -79,39 +79,45 @@ def scan():
                     for version in versions:
                         file_to_save_targets.write(
                             "----" + app + ": " + str(version) + "\n")
-
-                        vulners_query = app + " " + str(version)
-                        if vulners_query not in version_list:
+                        app_version = app + " " + str(version)
+                        if app_version not in version_list:
                             version_list = version_list + \
-                                "," + str(vulners_query)
-                        # Fetch vulnerabilites from Vulners.com API
-                        vulners_api = vulners.Vulners(api_key=VulnersKey)
-                        vulner_results = vulners_api.softwareVulnerabilities(
-                            app, str(version))  # Search for the public available exploits
-                        exploit_list = vulner_results.get('exploit')
-                        vulnerabilities_list = [vulner_results.get(
-                            key) for key in vulner_results if key not in ['info', 'blog', 'bugbounty']]
-                        # vulner_results = vulners_api.search(vulners_query)
-                        if len(vulnerabilities_list) != 0:
-                            vulners_file_save.write(
-                                "------ " + str(vulners_query) + " ------ \n")
-                            for vulns in vulnerabilities_list:
-                                for vuln in vulns:
-                                    vulners_file_save.write(
-                                        str(vuln['title']) + " ---- " + str(vuln['href']))
-                                    vulners_file_save.write("\n----\n")
-                        vulners_file_save.write(
-                            "----------------------------\n\n")
+                                "," + str(app_version)
             file_to_save_targets.write("###################\n\n")
-            vulners_file_save.write("###################\n\n")
         except KeyboardInterrupt:
             print("Keyboard interrupt detected. Finishing up...")
             break
-
+    print(version_list)
     file_to_save_targets.write("----------- All versions found: --------\n")
     split_version_list = sorted(version_list.split(","))
     for ver in split_version_list:
         file_to_save_targets.write(ver + "\n")
+        app_version = ver.split(" ")
+        if app_version != ['']:
+            print(app_version)
+            app = app_version[0]
+            version = app_version[1]
+        else:
+            continue
+        print("tääää " + str(app_version))
+        # Fetch vulnerabilites from Vulners.com API
+        vulners_api = vulners.Vulners(api_key=VulnersKey)
+        vulner_results = vulners_api.softwareVulnerabilities(
+            app, version)  # Search for the public available exploits
+        exploit_list = vulner_results.get('exploit')
+        vulnerabilities_list = [vulner_results.get(
+            key) for key in vulner_results if key not in ['info', 'blog', 'bugbounty']]
+        # vulner_results = vulners_api.search(vulners_query)
+        if len(vulnerabilities_list) != 0:
+            vulners_file_save.write(
+                "------ " + app + " " + version + " ------ \n")
+            for vulns in vulnerabilities_list:
+                for vuln in vulns:
+                    vulners_file_save.write(
+                        str(vuln['title']) + " ---- " + str(vuln['href']))
+                    vulners_file_save.write("\n\n")
+            vulners_file_save.write(
+                "#########################################\n\n")
 
 
 def scan_solo(targets):
@@ -200,13 +206,14 @@ if __name__ == '__main__':
             "You need to add Vulners API key before starting the scan with Vulners DB")
 
     if not os.path.isdir('bounty-targets-data'):
-        os.system('git clone https://github.com/arkadiyt/bounty-targets-data.git') # First time run
+        # First time run
+        os.system('git clone https://github.com/arkadiyt/bounty-targets-data.git')
     else:
-        os.system('cd bounty-targets-data && git pull') # Not first time run
-    
-    if "Win" in platform.system():  
+        os.system('cd bounty-targets-data && git pull')  # Not first time run
+
+    if "Win" in platform.system():
         os.system("mkdir reports\%s" % (time))
-    else:  
+    else:
         os.system("mkdir -p reports/%s" % (time))
 
     if args.host:
