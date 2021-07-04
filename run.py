@@ -32,6 +32,11 @@ def scan():
     file_to_save_targets = open(filepath + "versions.txt", "w+")
     vulners_file_save = open(filepath + "vulners.txt", "w+")
 
+    if not args.bounty:
+        print("Starting the scan to all hosts (hosts that offer bounties and who don't)")
+    else: 
+        print("Starting the scan to targets that offer bounties")
+    file_to_save_targets.write("\n#######################\n" + "Hosts with technology stacks and their version information\n Note. You can find all tech stacks that have been found in a distinctive list at the end of this file!" + "\n#######################\n")
     version_list = ""
 
     for target in targets:
