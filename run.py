@@ -94,12 +94,10 @@ def scan():
         file_to_save_targets.write(ver + "\n")
         app_version = ver.split(" ")
         if app_version != ['']:
-            print(app_version)
             app = app_version[0]
             version = app_version[1]
         else:
             continue
-        print("tääää " + str(app_version))
         # Fetch vulnerabilites from Vulners.com API
         vulners_api = vulners.Vulners(api_key=VulnersKey)
         vulner_results = vulners_api.softwareVulnerabilities(
