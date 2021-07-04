@@ -85,9 +85,8 @@ def scan():
                                 "," + str(app_version)
             file_to_save_targets.write("###################\n\n")
         except KeyboardInterrupt:
-            print("Keyboard interrupt detected. Finishing up...")
+            print("Keyboard interrupt detected. Doing Vulners DB scan and then quitting...")
             break
-    print(version_list)
     file_to_save_targets.write("----------- All versions found: --------\n")
     split_version_list = sorted(version_list.split(","))
     for ver in split_version_list:
