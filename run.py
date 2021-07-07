@@ -89,6 +89,7 @@ def scan():
             break
     file_to_save_targets.write("----------- All versions found: --------\n")
     split_version_list = sorted(version_list.split(","))
+    print("Scanning found versions with Vulners DB...")
     for ver in split_version_list:
         file_to_save_targets.write(ver + "\n")
         app_version = ver.split(" ")
@@ -115,6 +116,8 @@ def scan():
                     vulners_file_save.write("\n\n")
             vulners_file_save.write(
                 "#########################################\n\n")
+    print("All scans finished!")
+    print("Reports saved to --> reports/%s/" % (time))
 
 
 def scan_solo(targets):
