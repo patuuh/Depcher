@@ -6,6 +6,7 @@ Tool to quickly analyze bug bounty platforms targets by checking their technolog
 ```bash
 pip3 install -r requirements.txt
 ```
+Set API keys to config file
 
 ## Usage
 ```bash
