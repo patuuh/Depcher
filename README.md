@@ -12,3 +12,7 @@ Set API keys to config file
 ```bash
 python3 run.py
 ```
+
+## Issues
+
+H1 api for some reason is not working for me... Feel free to contact me if you get it to work
